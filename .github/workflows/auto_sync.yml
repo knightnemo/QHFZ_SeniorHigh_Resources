@@ -1,0 +1,26 @@
+name: Scheduled Merge Remote Action
+
+on:
+  push:
+  schedule:
+    - cron: "0 */3 * * *" # run every hour
+
+env:
+  target_branch: ${{ secrets.target_branch && secrets.target_branch || 'main' }}
+
+jobs:
+  merge-upstream:
+    if: github.repository_owner != 'knightnemo'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.target_branch }} # set the branch to merge to
+          fetch-depth: 0
+      - name: Merge Upstream ${{ env.target_branch }}
+        uses: exions/merge-upstream@v1
+        with:
+          upstream: knightnemo/QHFZ_SeniorHigh_Resources # set the upstream repo
+          upstream-branch: main # set the upstream branch to merge from
+          branch: ${{ env.target_branch }} # set the branch to merge to
