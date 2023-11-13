@@ -2,6 +2,7 @@ name: Scheduled Merge Remote Action
 
 on:
   push:
+  workflow_dispatch:
   schedule:
     - cron: "0 */3 * * *" # run every hour
 
